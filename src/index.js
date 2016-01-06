@@ -1,24 +1,26 @@
-import _ from "lodash";
-import babel from "babel-core";
-import colors from "colors/safe";
-import jsdiff from "diff";
-import Promise from "bluebird";
+"use strict";
 
-const fs = Promise.promisifyAll(require("fs"));
+var _ = require("lodash");
+var babel = require("babel-core");
+var colors = require("colors/safe");
+var jsdiff = require("diff");
+var Promise = require("bluebird");
 
-const getDiff = function getDiff(obj) {
+var fs = Promise.promisifyAll(require("fs"));
+
+var getDiff = function getDiff(obj) {
   return jsdiff.diffTrimmedLines(obj.actual, obj.expected);
 };
 
-const generateErrorMessage = function generateError(diff) {
-  return diff.map((part) => {
-    let color = "grey";
+var generateErrorMessage = function generateError(diff) {
+  return diff.map(function (part) {
+    var color = "grey";
     if (part.added) { color = "green"; }
     if (part.removed) { color = "red"; }
 
     return colors[color](part.value);
   })
-  .reduce((previousValue, currentValue) => {
+  .reduce(function (previousValue, currentValue) {
     previousValue += currentValue;
     return previousValue;
   }, "");
@@ -29,13 +31,13 @@ module.exports = function (initial, expected, babelConfig) {
   return Promise.props({
     actual: fs.readFileAsync(initial, "utf8")
       .then(_.partialRight(babel.transform, babelConfig))
-      .then((result) => result.code)
+      .then(function (result) { return result.code; })
       .then(_.trim),
     expected: fs.readFileAsync(expected, "utf8")
       .then(_.trim)
   })
   .then(getDiff)
-  .then((diff) => {
+  .then(function (diff) {
     if (diff.length === 1) {
       return true;
     } else {
