@@ -27,11 +27,11 @@ var generateErrorMessage = function generateError(diff) {
 // TODO: Allow initial / expected to be Strings
 module.exports = function (initial, expected, babelConfig) {
   return Promise.props({
-    actual: fs.readFileAsync(path.join(__dirname, initial), "utf8")
+    actual: fs.readFileAsync(initial, "utf8")
       .then(_.partialRight(babel.transform, babelConfig))
       .then(function (result) { return result.code; })
       .then(_.trim),
-    expected: fs.readFileAsync(path.join(__dirname, expected), "utf8")
+    expected: fs.readFileAsync(expected, "utf8")
       .then(_.trim),
   })
   .then(getDiff)
