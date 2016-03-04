@@ -1,7 +1,7 @@
 {
   "name": "assert-transform",
   "version": "1.0.0",
-  "description": "Return a promise that asserts that a babel transformation does what you expect",
+  "description": "Return a promise asserting that `babelTransform(actual) === expected`",
   "license": "MIT",
   "main": "lib/index.js",
   "author": "Eric Baer <me@ericbaer.com>",

@@ -1,6 +1,6 @@
-# [WIP] assert-transform
+# assert-transform
 
-Return a promise that asserts that a babel transformation does what you expect.
+Return a promise asserting that `babelTransform(actual) === expected`
 
 ```js
 var assertTransform = require("assert-transform");
