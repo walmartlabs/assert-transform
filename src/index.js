@@ -1,10 +1,10 @@
 "use strict";
 
-import { trim, partialRight } from "lodash";
-import babel from "babel-core";
-import colors from "colors/safe";
-import jsdiff from "diff";
-import Promise from "bluebird";
+const _ = require("lodash");
+const babel = require("babel-core");
+const colors = require("colors/safe");
+const jsdiff = require("diff");
+const Promise = require("bluebird");
 
 const fs = Promise.promisifyAll(require("fs"));
 
@@ -30,11 +30,11 @@ const generateErrorMessage = function generateError(diff) {
 module.exports = function (initial, expected, babelConfig) {
   return Promise.props({
     actual: fs.readFileAsync(initial, "utf8")
-      .then(partialRight(babel.transform, babelConfig))
+      .then(_.partialRight(babel.transform, babelConfig))
       .then((result) => result.code)
-      .then(trim),
+      .then(_.trim),
     expected: fs.readFileAsync(expected, "utf8")
-      .then(trim)
+      .then(_.trim)
   })
   .then(getDiff)
   .then((diff) => {
