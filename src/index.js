@@ -28,9 +28,13 @@ const generateErrorMessage = function generateError(diff) {
 
 // TODO: Allow initial / expected to be Strings
 module.exports = function (initial, expected, babelConfig) {
+  const config = _.extend({}, babelConfig, {
+    filename: initial
+  });
+
   return Promise.props({
     actual: fs.readFileAsync(initial, "utf8")
-      .then(_.partialRight(babel.transform, babelConfig))
+      .then(_.partialRight(babel.transform, config))
       .then((result) => result.code)
       .then(_.trim),
     expected: fs.readFileAsync(expected, "utf8")
